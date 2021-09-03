@@ -52,6 +52,18 @@ export class Database {
         }
     }
 
+    getRandomPrefix(): Prefix | undefined {
+        if (! this.ipRanges?.prefixes) {
+            return undefined;
+        }
+
+        let allPrefixes = (this.ipRanges.prefixes);
+
+        let index = Math.trunc(Math.random() * allPrefixes.length);
+
+        return allPrefixes[index];
+    }
+
     getMatchingPrefixes(addr: string): Prefix[] {
         let ipv4Addr = new Address4(addr);
 
