@@ -1,26 +1,66 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import {Main} from './components/main';
+import {Header} from './components/header';
+import {Footer} from './components/footer';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import {Database} from "./util/database";
+
+export const App = () => {
+    const [database, setDatabase] = useState(new Database(null));
+
+    useEffect(() => {
+        (async function whatever() {
+            let SOURCE = 'data/ip-ranges.json';
+
+            SOURCE = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
+
+            let response = await window.fetch(SOURCE);
+
+            if (response.ok) {
+                let jsonContent = await response.json();
+
+                setDatabase(new Database(jsonContent));
+            } else {
+                console.log("FUDEU");
+                setDatabase(new Database(null));
+            }
+        })();
+    }, [database])
+
+    return (
+        <div>
+            <Container fluid={"md"}>
+                <Row>
+                    <Col xs={12}>
+                        <Header/>
+                    </Col>
+                </Row>
+            </Container>
+            <br/>
+            <Container fluid={"md"}>
+                <Row>
+                    <Col xs={6}>
+                        <Main database={database}/>
+                    </Col>
+                </Row>
+            </Container>
+            <br/>
+            <Container fluid={"md"}>
+                <Row>
+                    <Col xs={12}>
+                        <Footer/>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+};
 
 export default App;
