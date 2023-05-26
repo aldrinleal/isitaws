@@ -1,62 +1,63 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useEffect, useState} from 'react';
 
 import {Main} from './components/main';
-import {Header} from './components/header';
-import {Footer} from './components/footer';
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {Database} from "./util/database";
+import styles from '../styles/Home.module.css'
+import Head from 'next/head'
+import {
+    Container,
+    Spacer,
+    Input,
+    Text
+} from '@nextui-org/react'
+
+import Footer from "./components/footer";
 
 export const App = () => {
-    const [database, setDatabase] = useState(new Database(null));
+        const [database, setDatabase] = useState(new Database(null));
 
-    useEffect(() => {
-        (async function whatever() {
+        useMemo(async () => {
             let SOURCE = 'data/ip-ranges.json';
 
             SOURCE = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
-            let response = await window.fetch(SOURCE);
+            // Browser-only code.
+            if (typeof window !== "undefined") {
+                let response = await window.fetch(SOURCE);
 
-            if (response.ok) {
-                let jsonContent = await response.json();
+                if (response.ok) {
+                    let jsonContent = await response.json();
 
-                setDatabase(new Database(jsonContent));
-            } else {
-                console.log("FUDEU");
-                setDatabase(new Database(null));
+                    let result = new Database(jsonContent);
+
+                    setDatabase(result);
+
+                    return result;
+                }
             }
-        })();
-    }, [database])
 
-    return (
-        <div>
-            <Container fluid={"md"}>
-                <Row>
-                    <Col xs={12}>
-                        <Header/>
-                    </Col>
-                </Row>
-            </Container>
-            <br/>
-            <Container fluid={"md"}>
-                <Row>
-                    <Col xs={6}>
-                        <Main database={database}/>
-                    </Col>
-                </Row>
-            </Container>
-            <br/>
-            <Container fluid={"md"}>
-                <Row>
-                    <Col xs={12}>
-                        <Footer/>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
-    );
-};
+            return null;
+        }, [database]);
+
+        // @ts-ignore
+        return (
+            <div className={styles.container}>
+                <Head>
+                    <title>Is it AWS?</title>
+                    <meta name="description"
+                          content="Tells if an IP Address belongs to AWS"/>
+                    <link rel="icon" href="/favicon.ico"/>
+                </Head>
+
+                <Container as="main" display="flex" direction="column" justify="center" alignItems="center"
+                           className="container-home">
+                    <Spacer/>
+                    <Main database={database}/>
+                    <Footer/>
+                </Container>
+            </div>
+        )
+    }
+;
 
 export default App;

@@ -1,10 +1,18 @@
 import {Database, Prefix} from "../util/database";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {Address4} from "ip-address";
+import {Spacer, Button, Input, Text, FormElement} from "@nextui-org/react"
+
+export const Summary = ({database}: { database: Database }) => {
+    return (
+        <Text>Amazon Web Services has {database.totalNumberOfHosts} hosts
+            across {database.totalNumberOfIPv4Networks} distinct IPv4 networks</Text>
+    )
+}
 
 export const Main = ({database}: { database: Database }) => {
     let [query, setQuery] = useState('');
-    let [result, setResult] = useState(<div>No Result</div>);
+    let [result, setResult] = useState(<div>No Results</div>);
 
     function modifyText(addrText: string) {
         setQuery(addrText);
@@ -14,14 +22,16 @@ export const Main = ({database}: { database: Database }) => {
 
             setResult(
                 <span>
-                <div>Look up results for address {addrText}</div>
+                    <Text>Look up results for address {addrText}:</Text>
+                    <Spacer y={1} />
                     {
                         filteredResults.map((match: Prefix) => {
                             return (
-                                <div>{match.ip_prefix} belongs to region {match.region} for service {match.service} in
-                                    border group {match.network_border_group}</div>)
+                                <Text>{match.ip_prefix} belongs to region {match.region} for service {match.service} in
+                                    border group {match.network_border_group}</Text>)
                         })
                     }
+                    <Spacer y={1} />
                 </span>
             );
         } else {
@@ -29,15 +39,13 @@ export const Main = ({database}: { database: Database }) => {
         }
     }
 
-    const onQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const onQueryChange = (event: ChangeEvent<FormElement>) => {
         let addrText = event.target.value;
 
         modifyText(addrText);
     }
 
-    const onSubmitRandom = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
+    const onRandom = (event: FormEvent<HTMLButtonElement>) => {
         let randomPrefix = database.getRandomPrefix()
 
         if (randomPrefix) {
@@ -45,16 +53,18 @@ export const Main = ({database}: { database: Database }) => {
         }
     }
 
+    // @ts-ignore
     return (
         <div className={"main"}>
-            <h1>Amazon Web Services has {database.totalNumberOfHosts} hosts
-                across {database.totalNumberOfIPv4Networks} distinct IPv4 networks</h1>
-            <form onSubmit={onSubmitRandom}>
-                <input type={"text"} name={"query"} placeholder={"Enter an IP Mask, or click to get a random one"}
-                       value={query} onChange={onQueryChange}/>
-                <input type={"submit"} name={"random"} value={"Random One"}/>
-            </form>
-            {result}
+            <Summary database={database}/>
+            <Spacer y={0.5}/>
+            <Input clearable type={"text"} name={"query"}
+                   placeholder={"Enter an IP Mask, or click to get a random one"}
+                   value={query} onChange={onQueryChange}/>
+            <Button onClick={onRandom}>Gimme a Random One</Button>
+            <Spacer y={0.5}/>
+            <div>{result}</div>
+            <Spacer y={0.5}/>
         </div>
     )
 }
