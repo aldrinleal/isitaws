@@ -12,9 +12,7 @@ export const App = () => {
         const [database, setDatabase] = useState(new Database(null));
 
         useMemo(async () => {
-            let SOURCE = 'data/ip-ranges.json';
-
-            SOURCE = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
+            const SOURCE = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
             // Browser-only code.
             if (typeof window !== "undefined") {

@@ -11,7 +11,11 @@ export default function Footer() {
                 <Link href="https://reactjs.org">react</Link>
             </Text>
             <Spacer y={1}/>
-            <Text>See also the <Link href="https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html">AWS Docs for this</Link></Text>
+            <Text>Source Code at <Link
+                href="https://github.com/aldrinleal/isitaws">https://github.com/aldrinleal/isitaws</Link></Text>
+            <Spacer y={1}/>
+            <Text>See also the <Link href="https://docs.aws.amazon.com/vpc/latest/userguide/aws-ip-ranges.html">AWS Docs
+                for this</Link></Text>
         </div>
     )
 }

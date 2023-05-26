@@ -1,8 +1,9 @@
 # TODO
 
+  - Code Cleanup / Refactoring
   - Routing and Hard Links (share)
-  - Analytics
   - Adsense
+- ~~Analytics~~
 
 # Getting Started with Create React App
 
