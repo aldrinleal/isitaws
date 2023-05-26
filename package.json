@@ -11,6 +11,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
+    "@vercel/analytics": "^1.0.1",
     "bootstrap": "5.1.0",
     "ip-address": "^8.1.0",
     "next": "^13.4.4",

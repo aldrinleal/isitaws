@@ -1,15 +1,10 @@
-import React, {useMemo, useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 
 import {Main} from './components/main';
 import {Database} from "./util/database";
 import styles from '../styles/Home.module.css'
 import Head from 'next/head'
-import {
-    Container,
-    Spacer,
-    Input,
-    Text
-} from '@nextui-org/react'
+import {Container, Spacer} from '@nextui-org/react'
 
 import Footer from "./components/footer";
 
@@ -37,7 +32,7 @@ export const App = () => {
             }
 
             return null;
-        }, [database]);
+        }, []);
 
         // @ts-ignore
         return (
