@@ -25,8 +25,8 @@ export default function MyApp({Component, pageProps}) {
 
             <NextUIProvider>
                 <Component {... pageProps} />
+                <Analytics />
             </NextUIProvider>
-            <Analytics />
         </>
     )
 }
