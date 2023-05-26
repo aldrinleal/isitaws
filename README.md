@@ -3,6 +3,7 @@
   - Code Cleanup / Refactoring
   - Routing and Hard Links (share)
   - Adsense
+  - useSWR
 - ~~Analytics~~
 
 # Getting Started with Create React App
